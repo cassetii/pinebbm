@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3C6E71">
+    <title>Pine BBM - Glamping Distribution System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3C6E71;
+            --secondary-color: #70AE6E;
+            --accent-color: #F4743B;
+            --highlight-color: #BEEE62;
+            --light-bg: #f8f9fa;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #BEEE62 0%, var(--light-bg) 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Login Page */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 420px;
+            animation: slideIn 0.8s ease-out;
+            border-top: 5px solid var(--highlight-color);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-logo {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2.5rem;
+            box-shadow: 0 8px 25px rgba(60, 110, 113, 0.3);
+        }
+
+        .login-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            text-align: center;
+        }
+
+        .login-subtitle {
+            color: var(--accent-color);
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .login-input:focus {
+            border-color: var(--highlight-color);
+            box-shadow: 0 0 0 0.2rem rgba(190, 238, 98, 0.25);
+            outline: none;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1.1rem;
+            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(60, 110, 113, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(60, 110, 113, 0.4);
+        }
+
+        /* Header */
+        .mobile-header {
+            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mobile-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .mobile-header h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        /* Navigation */
+        .mobile-nav {
+            display: flex;
+            background: white;
+            margin: 0.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mobile-nav-item {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: #f8f9fa;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .mobile-nav-item.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        /* Cards */
+        .mobile-card {
+            background: white;
+            margin: 0.5rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(60, 110, 113, 0.15);
+            overflow: hidden;
+        }
+
+        .mobile-card-header {
+            background: linear-gradient(135deg, #70AE6E 0%, #3C6E71 100%);
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--highlight-color);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(190, 238, 98, 0.25);
+        }
+
+        .form-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+        }
+
+        .form-btn.primary {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        .form-btn.secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .form-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* Distribution Item */
+        .distribution-item {
+            background: white;
+            margin: 0.5rem;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .distribution-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .po-number {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-family: monospace;
+            font-size: 1.1rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-packing { background: #fff3cd; color: #856404; }
+        .status-delivery { background: #cce5ff; color: #004085; }
+        .status-arrived { background: #d1ecf1; color: #0c5460; }
+        .status-finished { background: #d4edda; color: #155724; }
+
+        /* Status History Timeline */
+        .status-history {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .status-history-title {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.25rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--secondary-color);
+        }
+
+        .timeline-status {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .timeline-timestamp {
+            font-size: 0.75rem;
+            color: #666;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            border-left: 4px solid var(--highlight-color);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page-section active">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-logo">
+                    <i class="fas fa-truck-fast"></i>
+                </div>
+                <h2 class="login-title">Pine BBM</h2>
+                <p class="login-subtitle">Glamping Distribution System</p>
+
+                <form id="loginForm">
+                    <input type="text" class="login-input" placeholder="Username" id="username" required>
+                    <input type="password" class="login-input" placeholder="Password" id="password" required>
+                    <button type="submit" class="login-btn">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </form>
+
+                <div id="loginAlert" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page-section">
+        <!-- Header -->
+        <div class="mobile-header">
+            <div class="mobile-header-content">
+                <h1>
+                    <i class="fas fa-truck-fast me-2"></i>
+                    Pine BBM
+                </h1>
+                <div>
+                    <span id="currentUser">User</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="mobile-nav">
+            <div class="mobile-nav-item active" onclick="showSection('distribution')">
+                <i class="fas fa-plus-circle me-1"></i>Distribusi
+            </div>
+            <div class="mobile-nav-item" onclick="showSection('tracking')">
+                <i class="fas fa-map-marker-alt me-1"></i>Tracking
+            </div>
+            <div class="mobile-nav-item" onclick="showSection('history')">
+                <i class="fas fa-history me-1"></i>Riwayat
+            </div>
+            <div class="mobile-nav-item" onclick="showSection('dashboard')">
+                <i class="fas fa-chart-bar me-1"></i>Dashboard
+            </div>
+        </div>
+
+        <!-- Distribution Section -->
+        <div id="distributionSection" class="content-section active">
+            <div class="mobile-card">
+                <div class="mobile-card-header">
+                    <i class="fas fa-clipboard-list me-2"></i>Form Distribusi Baru
+                </div>
+                <form id="distributionForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label">Number PO <span style="color: red;">*</span></label>
+                            <input type="text" class="form-input" id="numberPO" placeholder="Masukkan nomor PO" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tanggal Kirim <span style="color: red;">*</span></label>
+                            <input type="date" class="form-input" id="tanggalKirim" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nomor Plat Kendaraan <span style="color: red;">*</span></label>
+                            <input type="text" class="form-input" id="nomorPlat" placeholder="B 1234 ABC" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Nama Operator <span style="color: red;">*</span></label>
+                            <input type="text" class="form-input" id="namaOperator" placeholder="Nama lengkap operator" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">No. Telp Operator <span style="color: red;">*</span></label>
+                            <input type="tel" class="form-input" id="noTelpOperator" placeholder="08123456789" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Jumlah Distribusi <span style="color: red;">*</span></label>
+                            <input type="number" class="form-input" id="jumlahDistribusi" placeholder="0" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tujuan <span style="color: red;">*</span></label>
+                            <input type="text" class="form-input" id="tujuan" placeholder="Lokasi tujuan" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">PIC Tujuan <span style="color: red;">*</span></label>
+                            <input type="text" class="form-input" id="picTujuan" placeholder="Nama PIC" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Status Awal <span style="color: red;">*</span></label>
+                            <select class="form-select" id="statusAwal" required>
+                                <option value="">Pilih Status</option>
+                                <option value="packing">Packing</option>
+                                <option value="delivery">Delivery</option>
+                                <option value="arrived">Arrived</option>
+                                <option value="finished">Finished</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div style="padding: 0 1.5rem 1.5rem;">
+                        <button type="submit" class="form-btn primary">
+                            <i class="fas fa-save me-1"></i>Simpan Distribusi
+                        </button>
+                        <button type="button" class="form-btn secondary" onclick="resetForm()">
+                            <i class="fas fa-times me-1"></i>Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tracking Section -->
+        <div id="trackingSection" class="content-section">
+            <div class="mobile-card">
+                <div class="mobile-card-header">
+                    <i class="fas fa-map-marker-alt me-2"></i>Tracking Distribusi
+                </div>
+                <div style="padding: 1rem;">
+                    <div id="trackingList">
+                        <!-- Sample Distribution Item -->
+                        <div class="distribution-item">
+                            <div class="distribution-header">
+                                <div class="po-number">PO-2025-001</div>
+                                <div class="status-badge status-delivery">Delivery</div>
+                            </div>
+                            <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                                <div><strong>Driver:</strong> John Doe (081234567890)</div>
+                                <div><strong>Kendaraan:</strong> B 1234 ABC</div>
+                                <div><strong>Tujuan:</strong> Bandung</div>
+                                <div><strong>Jumlah:</strong> 50 unit</div>
+                            </div>
+                            
+                            <!-- Update Status Button -->
+                            <div style="margin-top: 1rem;">
+                                <button class="form-btn primary" onclick="openStatusModal('PO-2025-001')">
+                                    <i class="fas fa-edit me-1"></i>Update Status
+                                </button>
+                            </div>
+
+                            <!-- Status History -->
+                            <div class="status-history">
+                                <div class="status-history-title">
+                                    <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
+                                </div>
+                                <div class="timeline">
+                                    <div class="timeline-item">
+                                        <div class="timeline-status">Delivery</div>
+                                        <div class="timeline-timestamp">15 Okt 2025, 10:30 WIB</div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-status">Packing</div>
+                                        <div class="timeline-timestamp">15 Okt 2025, 08:00 WIB</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Empty State -->
+                        <div id="emptyTracking" style="display: none; text-align: center; padding: 3rem; color: #666;">
+                            <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            <h5>Belum ada distribusi aktif</h5>
+                            <p>Buat distribusi baru untuk mulai tracking</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div id="historySection" class="content-section">
+            <div class="mobile-card">
+                <div class="mobile-card-header">
+                    <i class="fas fa-history me-2"></i>Riwayat Distribusi
+                </div>
+                <div style="padding: 1rem;">
+                    <div id="historyList">
+                        <div style="text-align: center; padding: 2rem; color: #666;">
+                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <p>Memuat riwayat...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboardSection" class="content-section">
+            <div class="mobile-card">
+                <div class="mobile-card-header">
+                    <i class="fas fa-chart-bar me-2"></i>Dashboard Overview
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalDistributions">0</div>
+                        <div class="stat-label">Total Distribusi</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="packingCount">0</div>
+                        <div class="stat-label">Packing</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="deliveryCount">0</div>
+                        <div class="stat-label">Delivery</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="arrivedCount">0</div>
+                        <div class="stat-label">Arrived</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="finishedCount">0</div>
+                        <div class="stat-label">Finished</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Update Modal -->
+    <div id="statusModal" style="display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); align-items: center; justify-content: center; padding: 1rem;">
+        <div style="background: white; border-radius: 15px; width: 100%; max-width: 500px; padding: 2rem;">
+            <h4 style="color: var(--primary-color); margin-bottom: 1.5rem;">
+                <i class="fas fa-edit me-2"></i>Update Status
+            </h4>
+            
+            <div style="margin-bottom: 1rem;">
+                <strong>PO Number:</strong> <span id="modalPONumber">-</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Status Baru</label>
+                <select class="form-select" id="newStatus">
+                    <option value="">Pilih Status</option>
+                    <option value="packing">Packing</option>
+                    <option value="delivery">Delivery</option>
+                    <option value="arrived">Arrived</option>
+                    <option value="finished">Finished</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem;">
+                <button class="form-btn primary" onclick="updateStatus()">
+                    <i class="fas fa-save me-1"></i>Simpan
+                </button>
+                <button class="form-btn secondary" onclick="closeStatusModal()">
+                    <i class="fas fa-times me-1"></i>Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== GLOBAL VARIABLES ==========
+        let currentUser = null;
+        let distributionData = [];
+        let currentEditingPO = null;
+
+        // ========== LOGIN FUNCTIONS ==========
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // TODO: Implement proper authentication
+            // Temporary: accept any username/password
+            if (username && password) {
+                currentUser = { username: username };
+                showAlert('Login berhasil!', 'success');
+                setTimeout(() => {
+                    document.getElementById('loginPage').classList.remove('active');
+                    document.getElementById('mainApp').classList.add('active');
+                    document.getElementById('currentUser').textContent = username;
+                    loadDistributionData();
+                }, 1000);
+            } else {
+                showAlert('Username dan password harus diisi!', 'danger');
+            }
+        });
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                currentUser = null;
+                document.getElementById('mainApp').classList.remove('active');
+                document.getElementById('loginPage').classList.add('active');
+                document.getElementById('loginForm').reset();
+            }
+        }
+
+        // ========== NAVIGATION ==========
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(section + 'Section').classList.add('active');
+            event.target.classList.add('active');
+
+            // Load data for specific sections
+            if (section === 'tracking') {
+                loadTrackingData();
+            } else if (section === 'history') {
+                loadHistoryData();
+            } else if (section === 'dashboard') {
+                updateDashboard();
+            }
+        }
+
+        // ========== DISTRIBUTION FORM ==========
+        document.getElementById('distributionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                id: Date.now().toString(),
+                numberPO: document.getElementById('numberPO').value,
+                tanggalKirim: document.getElementById('tanggalKirim').value,
+                nomorPlat: document.
+                statusHistory: [
+                    {
+                        status: document.getElementById('statusAwal').value,
+                        timestamp: new Date().toISOString(),
+                        user: currentUser.username
+                    }
+                ],
+                createdAt: new Date().toISOString(),
+                createdBy: currentUser.username
+            };
+
+            // TODO: Save to Firebase/Database
+            distributionData.push(formData);
+            saveToLocalStorage();
+
+            showAlert('Distribusi berhasil ditambahkan! PO: ' + formData.numberPO, 'success');
+            resetForm();
+            updateDashboard();
+        });
+
+        function resetForm() {
+            document.getElementById('distributionForm').reset();
+        }
+
+        // ========== TRACKING FUNCTIONS ==========
+        function loadTrackingData() {
+            const trackingList = document.getElementById('trackingList');
+            const activeDistributions = distributionData.filter(d => d.currentStatus !== 'finished');
+
+            if (activeDistributions.length === 0) {
+                trackingList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h5>Belum ada distribusi aktif</h5>
+                        <p>Buat distribusi baru untuk mulai tracking</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            activeDistributions.forEach(dist => {
+                const statusClass = 'status-' + dist.currentStatus;
+                const statusText = getStatusText(dist.currentStatus);
+
+                html += `
+                    <div class="distribution-item">
+                        <div class="distribution-header">
+                            <div class="po-number">${dist.numberPO}</div>
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                            <div><strong>Driver:</strong> ${dist.namaDriver} (${dist.noTelpDriver})</div>
+                            <div><strong>Kendaraan:</strong> ${dist.nomorPlat}</div>
+                            <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
+                            <div><strong>Jumlah:</strong> ${dist.jumlahDistribusi} unit</div>
+                            <div><strong>PIC:</strong> ${dist.picTujuan}</div>
+                        </div>
+                        
+                        <div style="margin-top: 1rem;">
+                            <button class="form-btn primary" onclick="openStatusModal('${dist.numberPO}')">
+                                <i class="fas fa-edit me-1"></i>Update Status
+                            </button>
+                        </div>
+
+                        <div class="status-history">
+                            <div class="status-history-title">
+                                <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
+                            </div>
+                            <div class="timeline">
+                                ${generateTimelineHTML(dist.statusHistory)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            trackingList.innerHTML = html;
+        }
+
+        function generateTimelineHTML(history) {
+            if (!history || history.length === 0) return '<p style="color: #666;">Belum ada riwayat</p>';
+
+            let html = '';
+            // Reverse to show newest first
+            [...history].reverse().forEach(item => {
+                const date = new Date(item.timestamp);
+                const formattedDate = date.toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                html += `
+                    <div class="timeline-item">
+                        <div class="timeline-status">${getStatusText(item.status)}</div>
+                        <div class="timeline-timestamp">${formattedDate} WIB - ${item.user}</div>
+                    </div>
+                `;
+            });
+
+            return html;
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'packing': 'Packing',
+                'delivery': 'Delivery',
+                'arrived': 'Arrived',
+                'finished': 'Finished'
+            };
+            return statusMap[status] || status;
+        }
+
+        // ========== STATUS UPDATE MODAL ==========
+        function openStatusModal(poNumber) {
+            currentEditingPO = poNumber;
+            document.getElementById('modalPONumber').textContent = poNumber;
+            document.getElementById('newStatus').value = '';
+            document.getElementById('statusModal').style.display = 'flex';
+        }
+
+        function closeStatusModal() {
+            currentEditingPO = null;
+            document.getElementById('statusModal').style.display = 'none';
+        }
+
+        function updateStatus() {
+            const newStatus = document.getElementById('newStatus').value;
+            
+            if (!newStatus) {
+                showAlert('Pilih status terlebih dahulu!', 'warning');
+                return;
+            }
+
+            // Find distribution
+            const distIndex = distributionData.findIndex(d => d.numberPO === currentEditingPO);
+            if (distIndex === -1) {
+                showAlert('Data distribusi tidak ditemukan!', 'danger');
+                return;
+            }
+
+            // Update status and add to history
+            distributionData[distIndex].currentStatus = newStatus;
+            distributionData[distIndex].statusHistory.push({
+                status: newStatus,
+                timestamp: new Date().toISOString(),
+                user: currentUser.username
+            });
+
+            // TODO: Save to Firebase/Database
+            saveToLocalStorage();
+
+            showAlert('Status berhasil diupdate!', 'success');
+            closeStatusModal();
+            loadTrackingData();
+            updateDashboard();
+        }
+
+        // ========== HISTORY FUNCTIONS ==========
+        function loadHistoryData() {
+            const historyList = document.getElementById('historyList');
+
+            if (distributionData.length === 0) {
+                historyList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h5>Belum ada riwayat distribusi</h5>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            // Sort by created date, newest first
+            const sortedData = [...distributionData].sort((a, b) => 
+                new Date(b.createdAt) - new Date(a.createdAt)
+            );
+
+            sortedData.forEach(dist => {
+                const statusClass = 'status-' + dist.currentStatus;
+                const statusText = getStatusText(dist.currentStatus);
+                const createdDate = new Date(dist.createdAt).toLocaleDateString('id-ID');
+
+                html += `
+                    <div class="distribution-item">
+                        <div class="distribution-header">
+                            <div class="po-number">${dist.numberPO}</div>
+                            <div class="status-badge ${statusClass}">${statusText}</div>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                            <div><strong>Tanggal Kirim:</strong> ${dist.tanggalKirim}</div>
+                            <div><strong>Driver:</strong> ${dist.namaDriver}</div>
+                            <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
+                            <div><strong>Dibuat:</strong> ${createdDate}</div>
+                        </div>
+                        
+                        <div class="status-history">
+                            <div class="status-history-title">
+                                <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
+                            </div>
+                            <div class="timeline">
+                                ${generateTimelineHTML(dist.statusHistory)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            historyList.innerHTML = html;
+        }
+
+        // ========== DASHBOARD FUNCTIONS ==========
+        function updateDashboard() {
+            const statusCount = {
+                packing: 0,
+                delivery: 0,
+                arrived: 0,
+                finished: 0
+            };
+
+            distributionData.forEach(dist => {
+                if (statusCount[dist.currentStatus] !== undefined) {
+                    statusCount[dist.currentStatus]++;
+                }
+            });
+
+            document.getElementById('totalDistributions').textContent = distributionData.length;
+            document.getElementById('packingCount').textContent = statusCount.packing;
+            document.getElementById('deliveryCount').textContent = statusCount.delivery;
+            document.getElementById('arrivedCount').textContent = statusCount.arrived;
+            document.getElementById('finishedCount').textContent = statusCount.finished;
+        }
+
+        // ========== DATA PERSISTENCE ==========
+        function saveToLocalStorage() {
+            // TODO: Replace with Firebase save
+            localStorage.setItem('pine_bbm_distributions', JSON.stringify(distributionData));
+        }
+
+        function loadDistributionData() {
+            // TODO: Replace with Firebase load
+            const saved = localStorage.getItem('pine_bbm_distributions');
+            if (saved) {
+                distributionData = JSON.parse(saved);
+                updateDashboard();
+            }
+        }
+
+        // ========== UTILITIES ==========
+        function showAlert(message, type = 'success') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.cssText = `
+                position: fixed;
+                top: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 10000;
+                min-width: 300px;
+                max-width: 90%;
+                border-radius: 12px;
+                padding: 1rem 1.5rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            
+            const colors = {
+                success: { bg: '#d4edda', text: '#155724', icon: 'check-circle' },
+                danger: { bg: '#f8d7da', text: '#721c24', icon: 'exclamation-triangle' },
+                warning: { bg: '#fff3cd', text: '#856404', icon: 'exclamation-circle' },
+                info: { bg: '#d1ecf1', text: '#0c5460', icon: 'info-circle' }
+            };
+            
+            const color = colors[type] || colors.info;
+            alertDiv.style.backgroundColor = color.bg;
+            alertDiv.style.color = color.text;
+            
+            alertDiv.innerHTML = `
+                <i class="fas fa-${color.icon} me-2"></i>${message}
+            `;
+            
+            document.body.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 4000);
+        }
+
+        // ========== INITIALIZATION ==========
+        window.addEventListener('load', function() {
+            console.log('Pine BBM - Glamping Distribution System loaded');
+            // Set today's date as default
+            document.getElementById('tanggalKirim').valueAsDate = new Date();
+        });
+    </script>
+</body>
+</html>
