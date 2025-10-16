@@ -486,14 +486,19 @@
                 
                 <!-- Connection Status -->
                 <div style="padding: 1rem; background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
                         <div>
                             <strong>Status Koneksi:</strong> 
                             <span id="connectionStatus" style="color: #666;">Mengecek...</span>
                         </div>
-                        <button class="form-btn primary" onclick="testFirestoreConnection()" style="padding: 0.5rem 1rem; margin: 0;">
-                            <i class="fas fa-sync me-1"></i>Test Koneksi
-                        </button>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="form-btn primary" onclick="testFirestoreConnection()" style="padding: 0.5rem 1rem; margin: 0;">
+                                <i class="fas fa-sync me-1"></i>Test Koneksi
+                            </button>
+                            <button class="form-btn secondary" onclick="forceReloadData()" style="padding: 0.5rem 1rem; margin: 0;">
+                                <i class="fas fa-refresh me-1"></i>Refresh Data
+                            </button>
+                        </div>
                     </div>
                 </div>
                 
@@ -589,6 +594,8 @@
 
         // ========== NAVIGATION ==========
         async function showSection(section) {
+            console.log('📍 Navigating to:', section);
+            
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
@@ -597,12 +604,18 @@
             document.getElementById(section + 'Section').classList.add('active');
             event.target.classList.add('active');
 
+            // Always reload data first
+            await loadDistributionData();
+
             // Load data for specific sections
             if (section === 'tracking') {
+                console.log('🔄 Loading tracking data...');
                 await loadTrackingData();
             } else if (section === 'history') {
+                console.log('🔄 Loading history data...');
                 loadHistoryData();
             } else if (section === 'dashboard') {
+                console.log('🔄 Updating dashboard...');
                 updateDashboard();
             }
         }
@@ -657,14 +670,27 @@
         // ========== TRACKING FUNCTIONS ==========
         async function loadTrackingData() {
             const trackingList = document.getElementById('trackingList');
+            
+            // Show loading
+            trackingList.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: #666;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>Memuat data tracking...</p>
+                </div>
+            `;
+            
+            console.log('📊 Total data in memory:', distributionData.length);
+            
             const activeDistributions = distributionData.filter(d => d.currentStatus !== 'finished');
+            console.log('✅ Active BBM (not finished):', activeDistributions.length);
 
             if (activeDistributions.length === 0) {
                 trackingList.innerHTML = `
                     <div style="text-align: center; padding: 3rem; color: #666;">
                         <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
                         <h5>Belum ada BBM aktif</h5>
-                        <p>Buat data BBM baru untuk mulai tracking</p>
+                        <p>Status "Finished" tidak ditampilkan di Tracking</p>
+                        <p style="margin-top: 1rem;">Total data BBM: ${distributionData.length}</p>
                     </div>
                 `;
                 return;
@@ -708,6 +734,7 @@
             });
 
             trackingList.innerHTML = html;
+            console.log('✅ Tracking data rendered successfully');
         }
 
         function generateTimelineHTML(history) {
@@ -873,6 +900,8 @@
 
         // ========== DASHBOARD FUNCTIONS ==========
         function updateDashboard() {
+            console.log('📊 Updating dashboard with', distributionData.length, 'records');
+            
             const statusCount = {
                 packing: 0,
                 delivery: 0,
@@ -886,11 +915,15 @@
                 }
             });
 
+            console.log('📈 Status breakdown:', statusCount);
+
             document.getElementById('totalDistributions').textContent = distributionData.length;
             document.getElementById('packingCount').textContent = statusCount.packing;
             document.getElementById('deliveryCount').textContent = statusCount.delivery;
             document.getElementById('arrivedCount').textContent = statusCount.arrived;
             document.getElementById('finishedCount').textContent = statusCount.finished;
+            
+            console.log('✅ Dashboard updated successfully');
         }
 
         // ========== DATA PERSISTENCE ==========
@@ -987,6 +1020,27 @@
             }
         }
 
+        // Force Reload Data
+        async function forceReloadData() {
+            try {
+                showAlert('🔄 Memuat ulang data dari Firestore...', 'info');
+                console.log('🔄 Force reloading data...');
+                
+                await loadDistributionData();
+                
+                // Update all sections
+                updateDashboard();
+                await loadTrackingData();
+                loadHistoryData();
+                
+                showAlert('✅ Data berhasil dimuat ulang! Total: ' + distributionData.length, 'success');
+                
+            } catch (error) {
+                console.error('❌ Error reloading data:', error);
+                showAlert('❌ Gagal memuat ulang data: ' + error.message, 'danger');
+            }
+        }
+
         // ========== UTILITIES ==========
         function showAlert(message, type = 'success') {
             const alertDiv = document.createElement('div');
@@ -1025,12 +1079,27 @@
 
         // ========== INITIALIZATION ==========
         window.addEventListener('load', async function() {
-            console.log('Pine BBM - BBM Management System loaded');
+            console.log('🚀 Pine BBM - BBM Management System Loading...');
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('📦 Project:', firebaseConfig.projectId);
+            console.log('🔥 Firebase Status: Initialized');
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            
             // Set today's date as default
             document.getElementById('tanggalKirim').valueAsDate = new Date();
+            console.log('✅ Form initialized');
             
             // Load existing data from Firestore
+            console.log('📡 Connecting to Firestore...');
             await loadDistributionData();
+            
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('✅ Application Ready!');
+            console.log('💡 Tips:');
+            console.log('   - Buka tab Dashboard untuk test koneksi');
+            console.log('   - Tambah data di menu "BBM Baru"');
+            console.log('   - Lihat Console (F12) untuk debugging');
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         });
     </script>
 </body>
