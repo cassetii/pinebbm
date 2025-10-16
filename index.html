@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3C6E71">
-    <title>Pine BBM - Glamping Distribution System</title>
+    <title>Pine BBM - BBM Management System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -29,97 +29,6 @@
             line-height: 1.6;
         }
 
-        /* Login Page */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
-        }
-
-        .login-card {
-            background: white;
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 420px;
-            animation: slideIn 0.8s ease-out;
-            border-top: 5px solid var(--highlight-color);
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .login-logo {
-            width: 90px;
-            height: 90px;
-            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            color: white;
-            font-size: 2.5rem;
-            box-shadow: 0 8px 25px rgba(60, 110, 113, 0.3);
-        }
-
-        .login-title {
-            color: var(--primary-color);
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-            text-align: center;
-        }
-
-        .login-subtitle {
-            color: var(--accent-color);
-            font-size: 0.95rem;
-            font-weight: 500;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-input {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid #e9ecef;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            margin-bottom: 1rem;
-        }
-
-        .login-input:focus {
-            border-color: var(--highlight-color);
-            box-shadow: 0 0 0 0.2rem rgba(190, 238, 98, 0.25);
-            outline: none;
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 1.1rem;
-            background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(60, 110, 113, 0.3);
-        }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(60, 110, 113, 0.4);
-        }
-
         /* Header */
         .mobile-header {
             background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
@@ -142,16 +51,6 @@
             font-size: 1.25rem;
             margin: 0;
             font-weight: 600;
-        }
-
-        .logout-btn {
-            background: rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         /* Navigation */
@@ -413,51 +312,22 @@
     </style>
 </head>
 <body>
-    <!-- Login Page -->
-    <div id="loginPage" class="page-section active">
-        <div class="login-container">
-            <div class="login-card">
-                <div class="login-logo">
-                    <i class="fas fa-truck-fast"></i>
-                </div>
-                <h2 class="login-title">Pine BBM</h2>
-                <p class="login-subtitle">Glamping Distribution System</p>
-
-                <form id="loginForm">
-                    <input type="text" class="login-input" placeholder="Username" id="username" required>
-                    <input type="password" class="login-input" placeholder="Password" id="password" required>
-                    <button type="submit" class="login-btn">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login
-                    </button>
-                </form>
-
-                <div id="loginAlert" class="mt-3"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Main App -->
-    <div id="mainApp" class="page-section">
+    <div id="mainApp" class="page-section active">
         <!-- Header -->
         <div class="mobile-header">
             <div class="mobile-header-content">
                 <h1>
                     <i class="fas fa-truck-fast me-2"></i>
-                    Pine BBM
+                    Pine BBM - BBM Management System
                 </h1>
-                <div>
-                    <span id="currentUser">User</span>
-                    <button class="logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
-                </div>
             </div>
         </div>
 
         <!-- Navigation -->
         <div class="mobile-nav">
             <div class="mobile-nav-item active" onclick="showSection('distribution')">
-                <i class="fas fa-plus-circle me-1"></i>Distribusi
+                <i class="fas fa-plus-circle me-1"></i>BBM Baru
             </div>
             <div class="mobile-nav-item" onclick="showSection('tracking')">
                 <i class="fas fa-map-marker-alt me-1"></i>Tracking
@@ -474,7 +344,7 @@
         <div id="distributionSection" class="content-section active">
             <div class="mobile-card">
                 <div class="mobile-card-header">
-                    <i class="fas fa-clipboard-list me-2"></i>Form Distribusi Baru
+                    <i class="fas fa-clipboard-list me-2"></i>Form BBM Baru
                 </div>
                 <form id="distributionForm">
                     <div class="form-grid">
@@ -499,7 +369,7 @@
                             <input type="tel" class="form-input" id="noTelpOperator" placeholder="08123456789" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">Jumlah Distribusi <span style="color: red;">*</span></label>
+                            <label class="form-label">Jumlah BBM (Liter) <span style="color: red;">*</span></label>
                             <input type="number" class="form-input" id="jumlahDistribusi" placeholder="0" min="1" required>
                         </div>
                         <div class="form-group">
@@ -523,7 +393,7 @@
                     </div>
                     <div style="padding: 0 1.5rem 1.5rem;">
                         <button type="submit" class="form-btn primary">
-                            <i class="fas fa-save me-1"></i>Simpan Distribusi
+                            <i class="fas fa-save me-1"></i>Simpan Data BBM
                         </button>
                         <button type="button" class="form-btn secondary" onclick="resetForm()">
                             <i class="fas fa-times me-1"></i>Reset
@@ -537,7 +407,7 @@
         <div id="trackingSection" class="content-section">
             <div class="mobile-card">
                 <div class="mobile-card-header">
-                    <i class="fas fa-map-marker-alt me-2"></i>Tracking Distribusi
+                    <i class="fas fa-map-marker-alt me-2"></i>Tracking BBM
                 </div>
                 <div style="padding: 1rem;">
                     <div id="trackingList">
@@ -548,10 +418,10 @@
                                 <div class="status-badge status-delivery">Delivery</div>
                             </div>
                             <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                                <div><strong>Driver:</strong> John Doe (081234567890)</div>
+                                <div><strong>Operator:</strong> John Doe (081234567890)</div>
                                 <div><strong>Kendaraan:</strong> B 1234 ABC</div>
                                 <div><strong>Tujuan:</strong> Bandung</div>
-                                <div><strong>Jumlah:</strong> 50 unit</div>
+                                <div><strong>Jumlah:</strong> 50 Liter</div>
                             </div>
                             
                             <!-- Update Status Button -->
@@ -582,8 +452,8 @@
                         <!-- Empty State -->
                         <div id="emptyTracking" style="display: none; text-align: center; padding: 3rem; color: #666;">
                             <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                            <h5>Belum ada distribusi aktif</h5>
-                            <p>Buat distribusi baru untuk mulai tracking</p>
+                            <h5>Belum ada BBM aktif</h5>
+                            <p>Buat data BBM baru untuk mulai tracking</p>
                         </div>
                     </div>
                 </div>
@@ -594,7 +464,7 @@
         <div id="historySection" class="content-section">
             <div class="mobile-card">
                 <div class="mobile-card-header">
-                    <i class="fas fa-history me-2"></i>Riwayat Distribusi
+                    <i class="fas fa-history me-2"></i>Riwayat BBM
                 </div>
                 <div style="padding: 1rem;">
                     <div id="historyList">
@@ -611,12 +481,12 @@
         <div id="dashboardSection" class="content-section">
             <div class="mobile-card">
                 <div class="mobile-card-header">
-                    <i class="fas fa-chart-bar me-2"></i>Dashboard Overview
+                    <i class="fas fa-chart-bar me-2"></i>Dashboard BBM
                 </div>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="totalDistributions">0</div>
-                        <div class="stat-label">Total Distribusi</div>
+                        <div class="stat-label">Total Data BBM</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="packingCount">0</div>
@@ -672,45 +542,38 @@
         </div>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
     <script>
+        // ========== FIREBASE CONFIGURATION ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyCHWtgTxTkCt983RqcL1_PJ3xrXATKLVCQ",
+            authDomain: "pinus-ekosistem.firebaseapp.com",
+            projectId: "pinus-ekosistem",
+            storageBucket: "pinus-ekosistem.firebasestorage.app",
+            messagingSenderId: "976149399827",
+            appId: "1:976149399827:web:158898de3881b764aaf2e6",
+            measurementId: "G-V5VLDY3D2H"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        
+        console.log('Firebase initialized successfully');
+        
         // ========== GLOBAL VARIABLES ==========
-        let currentUser = null;
         let distributionData = [];
         let currentEditingPO = null;
 
-        // ========== LOGIN FUNCTIONS ==========
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            // TODO: Implement proper authentication
-            // Temporary: accept any username/password
-            if (username && password) {
-                currentUser = { username: username };
-                showAlert('Login berhasil!', 'success');
-                setTimeout(() => {
-                    document.getElementById('loginPage').classList.remove('active');
-                    document.getElementById('mainApp').classList.add('active');
-                    document.getElementById('currentUser').textContent = username;
-                    loadDistributionData();
-                }, 1000);
-            } else {
-                showAlert('Username dan password harus diisi!', 'danger');
-            }
-        });
-
-        function logout() {
-            if (confirm('Apakah Anda yakin ingin logout?')) {
-                currentUser = null;
-                document.getElementById('mainApp').classList.remove('active');
-                document.getElementById('loginPage').classList.add('active');
-                document.getElementById('loginForm').reset();
-            }
-        }
+        // ========== NAVIGATION ==========
+        // ========== GLOBAL VARIABLES ==========
+        let distributionData = [];
+        let currentEditingPO = null;
 
         // ========== NAVIGATION ==========
-        function showSection(section) {
+        async function showSection(section) {
             // Hide all sections
             document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
@@ -721,7 +584,7 @@
 
             // Load data for specific sections
             if (section === 'tracking') {
-                loadTrackingData();
+                await loadTrackingData();
             } else if (section === 'history') {
                 loadHistoryData();
             } else if (section === 'dashboard') {
@@ -737,7 +600,21 @@
                 id: Date.now().toString(),
                 numberPO: document.getElementById('numberPO').value,
                 tanggalKirim: document.getElementById('tanggalKirim').value,
-                nomorPlat: document.
+                nomorPlat: document.getElementById('nomorPlat').value,
+                namaOperator: document.getElementById('namaOperator').value,
+                noTelpOperator: document.getElementById('noTelpOperator').value,
+                jumlahDistribusi: document.getElementById('jumlahDistribusi').value,
+                tujuan: document.getElementById('tujuan').value,
+                picTujuan: document.getElementById('picTujuan').value,
+                currentStatus: document.getElementById('statusAwal').value,
+                statusHistory: [
+                    {
+                        status: document.getElementById('statusAwal').value,
+                        timestamp: new Date().toISOString()
+                    }
+                ],
+                createdAt: new Date().toISOString()
+            };
                 statusHistory: [
                     {
                         status: document.getElementById('statusAwal').value,
@@ -753,7 +630,7 @@
             distributionData.push(formData);
             saveToLocalStorage();
 
-            showAlert('Distribusi berhasil ditambahkan! PO: ' + formData.numberPO, 'success');
+            showAlert('Data BBM berhasil ditambahkan! PO: ' + formData.numberPO, 'success');
             resetForm();
             updateDashboard();
         });
@@ -763,7 +640,7 @@
         }
 
         // ========== TRACKING FUNCTIONS ==========
-        function loadTrackingData() {
+        async function loadTrackingData() {
             const trackingList = document.getElementById('trackingList');
             const activeDistributions = distributionData.filter(d => d.currentStatus !== 'finished');
 
@@ -771,8 +648,8 @@
                 trackingList.innerHTML = `
                     <div style="text-align: center; padding: 3rem; color: #666;">
                         <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <h5>Belum ada distribusi aktif</h5>
-                        <p>Buat distribusi baru untuk mulai tracking</p>
+                        <h5>Belum ada BBM aktif</h5>
+                        <p>Buat data BBM baru untuk mulai tracking</p>
                     </div>
                 `;
                 return;
@@ -790,15 +667,15 @@
                             <div class="status-badge ${statusClass}">${statusText}</div>
                         </div>
                         <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                            <div><strong>Driver:</strong> ${dist.namaDriver} (${dist.noTelpDriver})</div>
+                            <div><strong>Operator:</strong> ${dist.namaOperator} (${dist.noTelpOperator})</div>
                             <div><strong>Kendaraan:</strong> ${dist.nomorPlat}</div>
                             <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
-                            <div><strong>Jumlah:</strong> ${dist.jumlahDistribusi} unit</div>
+                            <div><strong>Jumlah:</strong> ${dist.jumlahDistribusi} Liter</div>
                             <div><strong>PIC:</strong> ${dist.picTujuan}</div>
                         </div>
                         
                         <div style="margin-top: 1rem;">
-                            <button class="form-btn primary" onclick="openStatusModal('${dist.numberPO}')">
+                            <button class="form-btn primary" onclick="openStatusModal('${dist.id}')">
                                 <i class="fas fa-edit me-1"></i>Update Status
                             </button>
                         </div>
@@ -824,7 +701,17 @@
             let html = '';
             // Reverse to show newest first
             [...history].reverse().forEach(item => {
-                const date = new Date(item.timestamp);
+                let date;
+                if (item.timestamp && item.timestamp.toDate) {
+                    // Firestore Timestamp
+                    date = item.timestamp.toDate();
+                } else if (item.timestamp) {
+                    // Regular Date or ISO string
+                    date = new Date(item.timestamp);
+                } else {
+                    date = new Date();
+                }
+                
                 const formattedDate = date.toLocaleDateString('id-ID', {
                     day: 'numeric',
                     month: 'short',
@@ -836,7 +723,7 @@
                 html += `
                     <div class="timeline-item">
                         <div class="timeline-status">${getStatusText(item.status)}</div>
-                        <div class="timeline-timestamp">${formattedDate} WIB - ${item.user}</div>
+                        <div class="timeline-timestamp">${formattedDate} WIB</div>
                     </div>
                 `;
             });
@@ -855,9 +742,12 @@
         }
 
         // ========== STATUS UPDATE MODAL ==========
-        function openStatusModal(poNumber) {
-            currentEditingPO = poNumber;
-            document.getElementById('modalPONumber').textContent = poNumber;
+        function openStatusModal(docId) {
+            currentEditingPO = docId;
+            const dist = distributionData.find(d => d.id === docId);
+            if (dist) {
+                document.getElementById('modalPONumber').textContent = dist.numberPO;
+            }
             document.getElementById('newStatus').value = '';
             document.getElementById('statusModal').style.display = 'flex';
         }
@@ -867,7 +757,7 @@
             document.getElementById('statusModal').style.display = 'none';
         }
 
-        function updateStatus() {
+        async function updateStatus() {
             const newStatus = document.getElementById('newStatus').value;
             
             if (!newStatus) {
@@ -876,27 +766,39 @@
             }
 
             // Find distribution
-            const distIndex = distributionData.findIndex(d => d.numberPO === currentEditingPO);
-            if (distIndex === -1) {
-                showAlert('Data distribusi tidak ditemukan!', 'danger');
+            const dist = distributionData.find(d => d.id === currentEditingPO);
+            if (!dist) {
+                showAlert('Data BBM tidak ditemukan!', 'danger');
                 return;
             }
 
-            // Update status and add to history
-            distributionData[distIndex].currentStatus = newStatus;
-            distributionData[distIndex].statusHistory.push({
-                status: newStatus,
-                timestamp: new Date().toISOString(),
-                user: currentUser.username
-            });
+            try {
+                // Update in Firestore
+                const docRef = db.collection('bbm_management').doc(currentEditingPO);
+                
+                // Add new status to history
+                const newHistoryItem = {
+                    status: newStatus,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await docRef.update({
+                    currentStatus: newStatus,
+                    statusHistory: firebase.firestore.FieldValue.arrayUnion(newHistoryItem)
+                });
 
-            // TODO: Save to Firebase/Database
-            saveToLocalStorage();
-
-            showAlert('Status berhasil diupdate!', 'success');
-            closeStatusModal();
-            loadTrackingData();
-            updateDashboard();
+                showAlert('Status berhasil diupdate!', 'success');
+                closeStatusModal();
+                
+                // Reload data
+                await loadDistributionData();
+                loadTrackingData();
+                updateDashboard();
+                
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showAlert('Gagal update status: ' + error.message, 'danger');
+            }
         }
 
         // ========== HISTORY FUNCTIONS ==========
@@ -907,22 +809,24 @@
                 historyList.innerHTML = `
                     <div style="text-align: center; padding: 3rem; color: #666;">
                         <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <h5>Belum ada riwayat distribusi</h5>
+                        <h5>Belum ada riwayat BBM</h5>
                     </div>
                 `;
                 return;
             }
 
             let html = '';
-            // Sort by created date, newest first
-            const sortedData = [...distributionData].sort((a, b) => 
-                new Date(b.createdAt) - new Date(a.createdAt)
-            );
-
-            sortedData.forEach(dist => {
+            // Sort by created date, newest first - already sorted from Firestore query
+            distributionData.forEach(dist => {
                 const statusClass = 'status-' + dist.currentStatus;
                 const statusText = getStatusText(dist.currentStatus);
-                const createdDate = new Date(dist.createdAt).toLocaleDateString('id-ID');
+                
+                let createdDate = 'N/A';
+                if (dist.createdAt && dist.createdAt.toDate) {
+                    createdDate = dist.createdAt.toDate().toLocaleDateString('id-ID');
+                } else if (dist.createdAt) {
+                    createdDate = new Date(dist.createdAt).toLocaleDateString('id-ID');
+                }
 
                 html += `
                     <div class="distribution-item">
@@ -932,7 +836,7 @@
                         </div>
                         <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
                             <div><strong>Tanggal Kirim:</strong> ${dist.tanggalKirim}</div>
-                            <div><strong>Driver:</strong> ${dist.namaDriver}</div>
+                            <div><strong>Operator:</strong> ${dist.namaOperator}</div>
                             <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
                             <div><strong>Dibuat:</strong> ${createdDate}</div>
                         </div>
@@ -975,17 +879,26 @@
         }
 
         // ========== DATA PERSISTENCE ==========
-        function saveToLocalStorage() {
-            // TODO: Replace with Firebase save
-            localStorage.setItem('pine_bbm_distributions', JSON.stringify(distributionData));
-        }
-
-        function loadDistributionData() {
-            // TODO: Replace with Firebase load
-            const saved = localStorage.getItem('pine_bbm_distributions');
-            if (saved) {
-                distributionData = JSON.parse(saved);
+        async function loadDistributionData() {
+            try {
+                const querySnapshot = await db.collection('bbm_management')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                distributionData = [];
+                querySnapshot.forEach((doc) => {
+                    distributionData.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                console.log('Loaded', distributionData.length, 'BBM records from Firestore');
                 updateDashboard();
+                
+            } catch (error) {
+                console.error('Error loading from Firestore:', error);
+                showAlert('Gagal memuat data: ' + error.message, 'warning');
             }
         }
 
@@ -1026,10 +939,13 @@
         }
 
         // ========== INITIALIZATION ==========
-        window.addEventListener('load', function() {
-            console.log('Pine BBM - Glamping Distribution System loaded');
+        window.addEventListener('load', async function() {
+            console.log('Pine BBM - BBM Management System loaded');
             // Set today's date as default
             document.getElementById('tanggalKirim').valueAsDate = new Date();
+            
+            // Load existing data from Firestore
+            await loadDistributionData();
         });
     </script>
 </body>
