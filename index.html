@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#3C6E71">
-    <title>Pine BBM - BBM Management System</title>
+    <title>Pine BBM - Distribution System</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -29,7 +29,6 @@
             line-height: 1.6;
         }
 
-        /* Header */
         .mobile-header {
             background: linear-gradient(135deg, #3C6E71 0%, #70AE6E 100%);
             color: white;
@@ -42,7 +41,7 @@
 
         .mobile-header-content {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             padding: 0 1rem;
         }
@@ -53,7 +52,6 @@
             font-weight: 600;
         }
 
-        /* Navigation */
         .mobile-nav {
             display: flex;
             background: white;
@@ -80,7 +78,6 @@
             color: white;
         }
 
-        /* Cards */
         .mobile-card {
             background: white;
             margin: 0.5rem;
@@ -97,7 +94,6 @@
             font-size: 1.1rem;
         }
 
-        /* Form Styles */
         .form-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -158,7 +154,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        /* Distribution Item */
         .distribution-item {
             background: white;
             margin: 0.5rem;
@@ -194,7 +189,6 @@
         .status-arrived { background: #d1ecf1; color: #0c5460; }
         .status-finished { background: #d4edda; color: #155724; }
 
-        /* Status History Timeline */
         .status-history {
             margin-top: 1rem;
             padding-top: 1rem;
@@ -252,7 +246,6 @@
             color: #666;
         }
 
-        /* Stats Cards */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -282,7 +275,6 @@
             font-weight: 600;
         }
 
-        /* Sections */
         .content-section {
             display: none;
         }
@@ -291,15 +283,27 @@
             display: block;
         }
 
-        .page-section {
-            display: none;
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
         }
 
-        .page-section.active {
-            display: block;
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--secondary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
         }
 
-        /* Responsive */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -312,217 +316,155 @@
     </style>
 </head>
 <body>
-    <!-- Main App -->
-    <div id="mainApp" class="page-section active">
-        <!-- Header -->
-        <div class="mobile-header">
-            <div class="mobile-header-content">
-                <h1>
-                    <i class="fas fa-truck-fast me-2"></i>
-                    Pine BBM - BBM Management System
-                </h1>
-            </div>
+    <!-- Header -->
+    <div class="mobile-header">
+        <div class="mobile-header-content">
+            <h1>
+                <i class="fas fa-truck-fast me-2"></i>
+                Pine BBM - Distribution System
+            </h1>
         </div>
+    </div>
 
-        <!-- Navigation -->
-        <div class="mobile-nav">
-            <div class="mobile-nav-item active" onclick="showSection('distribution')">
-                <i class="fas fa-plus-circle me-1"></i>BBM Baru
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('tracking')">
-                <i class="fas fa-map-marker-alt me-1"></i>Tracking
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('history')">
-                <i class="fas fa-history me-1"></i>Riwayat
-            </div>
-            <div class="mobile-nav-item" onclick="showSection('dashboard')">
-                <i class="fas fa-chart-bar me-1"></i>Dashboard
-            </div>
+    <!-- Navigation -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-item active" onclick="showSection('distribution')">
+            <i class="fas fa-plus-circle me-1"></i>Distribusi
         </div>
+        <div class="mobile-nav-item" onclick="showSection('tracking')">
+            <i class="fas fa-map-marker-alt me-1"></i>Tracking
+        </div>
+        <div class="mobile-nav-item" onclick="showSection('history')">
+            <i class="fas fa-history me-1"></i>Riwayat
+        </div>
+        <div class="mobile-nav-item" onclick="showSection('dashboard')">
+            <i class="fas fa-chart-bar me-1"></i>Dashboard
+        </div>
+    </div>
 
-        <!-- Distribution Section -->
-        <div id="distributionSection" class="content-section active">
-            <div class="mobile-card">
-                <div class="mobile-card-header">
-                    <i class="fas fa-clipboard-list me-2"></i>Form BBM Baru
-                </div>
-                <form id="distributionForm">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label class="form-label">Number PO <span style="color: red;">*</span></label>
-                            <input type="text" class="form-input" id="numberPO" placeholder="Masukkan nomor PO" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Tanggal Kirim <span style="color: red;">*</span></label>
-                            <input type="date" class="form-input" id="tanggalKirim" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nomor Plat Kendaraan <span style="color: red;">*</span></label>
-                            <input type="text" class="form-input" id="nomorPlat" placeholder="B 1234 ABC" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Nama Operator <span style="color: red;">*</span></label>
-                            <input type="text" class="form-input" id="namaOperator" placeholder="Nama lengkap operator" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">No. Telp Operator <span style="color: red;">*</span></label>
-                            <input type="tel" class="form-input" id="noTelpOperator" placeholder="08123456789" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Jumlah BBM (Liter) <span style="color: red;">*</span></label>
-                            <input type="number" class="form-input" id="jumlahDistribusi" placeholder="0" min="1" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Tujuan <span style="color: red;">*</span></label>
-                            <input type="text" class="form-input" id="tujuan" placeholder="Lokasi tujuan" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">PIC Tujuan <span style="color: red;">*</span></label>
-                            <input type="text" class="form-input" id="picTujuan" placeholder="Nama PIC" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Status Awal <span style="color: red;">*</span></label>
-                            <select class="form-select" id="statusAwal" required>
-                                <option value="">Pilih Status</option>
-                                <option value="packing">Packing</option>
-                                <option value="delivery">Delivery</option>
-                                <option value="arrived">Arrived</option>
-                                <option value="finished">Finished</option>
-                            </select>
-                        </div>
+    <!-- Distribution Section -->
+    <div id="distributionSection" class="content-section active">
+        <div class="mobile-card">
+            <div class="mobile-card-header">
+                <i class="fas fa-clipboard-list me-2"></i>Form Distribusi Baru
+            </div>
+            <form id="distributionForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Number PO <span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" id="numberPO" placeholder="Masukkan nomor PO" required>
                     </div>
-                    <div style="padding: 0 1.5rem 1.5rem;">
-                        <button type="submit" class="form-btn primary">
-                            <i class="fas fa-save me-1"></i>Simpan Data BBM
-                        </button>
-                        <button type="button" class="form-btn secondary" onclick="resetForm()">
-                            <i class="fas fa-times me-1"></i>Reset
-                        </button>
+                    <div class="form-group">
+                        <label class="form-label">Tanggal Kirim <span style="color: red;">*</span></label>
+                        <input type="date" class="form-input" id="tanggalKirim" required>
                     </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- Tracking Section -->
-        <div id="trackingSection" class="content-section">
-            <div class="mobile-card">
-                <div class="mobile-card-header">
-                    <i class="fas fa-map-marker-alt me-2"></i>Tracking BBM
+                    <div class="form-group">
+                        <label class="form-label">Nomor Plat Kendaraan <span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" id="nomorPlat" placeholder="B 1234 ABC" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nama Driver <span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" id="namaDriver" placeholder="Nama lengkap driver" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">No. Telp Driver <span style="color: red;">*</span></label>
+                        <input type="tel" class="form-input" id="noTelpDriver" placeholder="08123456789" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Jumlah Distribusi <span style="color: red;">*</span></label>
+                        <input type="number" class="form-input" id="jumlahDistribusi" placeholder="0" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tujuan <span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" id="tujuan" placeholder="Lokasi tujuan" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">PIC Tujuan <span style="color: red;">*</span></label>
+                        <input type="text" class="form-input" id="picTujuan" placeholder="Nama PIC" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Status Awal <span style="color: red;">*</span></label>
+                        <select class="form-select" id="statusAwal" required>
+                            <option value="">Pilih Status</option>
+                            <option value="packing">Packing</option>
+                            <option value="delivery">Delivery</option>
+                            <option value="arrived">Arrived</option>
+                            <option value="finished">Finished</option>
+                        </select>
+                    </div>
                 </div>
-                <div style="padding: 1rem;">
-                    <div id="trackingList">
-                        <!-- Sample Distribution Item -->
-                        <div class="distribution-item">
-                            <div class="distribution-header">
-                                <div class="po-number">PO-2025-001</div>
-                                <div class="status-badge status-delivery">Delivery</div>
-                            </div>
-                            <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                                <div><strong>Operator:</strong> John Doe (081234567890)</div>
-                                <div><strong>Kendaraan:</strong> B 1234 ABC</div>
-                                <div><strong>Tujuan:</strong> Bandung</div>
-                                <div><strong>Jumlah:</strong> 50 Liter</div>
-                            </div>
-                            
-                            <!-- Update Status Button -->
-                            <div style="margin-top: 1rem;">
-                                <button class="form-btn primary" onclick="openStatusModal('PO-2025-001')">
-                                    <i class="fas fa-edit me-1"></i>Update Status
-                                </button>
-                            </div>
+                <div style="padding: 0 1.5rem 1.5rem;">
+                    <button type="submit" class="form-btn primary">
+                        <i class="fas fa-save me-1"></i>Simpan Distribusi
+                    </button>
+                    <button type="button" class="form-btn secondary" onclick="resetForm()">
+                        <i class="fas fa-times me-1"></i>Reset
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                            <!-- Status History -->
-                            <div class="status-history">
-                                <div class="status-history-title">
-                                    <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
-                                </div>
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-status">Delivery</div>
-                                        <div class="timeline-timestamp">15 Okt 2025, 10:30 WIB</div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-status">Packing</div>
-                                        <div class="timeline-timestamp">15 Okt 2025, 08:00 WIB</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Empty State -->
-                        <div id="emptyTracking" style="display: none; text-align: center; padding: 3rem; color: #666;">
-                            <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                            <h5>Belum ada BBM aktif</h5>
-                            <p>Buat data BBM baru untuk mulai tracking</p>
-                        </div>
+    <!-- Tracking Section -->
+    <div id="trackingSection" class="content-section">
+        <div class="mobile-card">
+            <div class="mobile-card-header">
+                <i class="fas fa-map-marker-alt me-2"></i>Tracking Distribusi
+            </div>
+            <div style="padding: 1rem;">
+                <div id="trackingList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Memuat data tracking...</p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- History Section -->
-        <div id="historySection" class="content-section">
-            <div class="mobile-card">
-                <div class="mobile-card-header">
-                    <i class="fas fa-history me-2"></i>Riwayat BBM
-                </div>
-                <div style="padding: 1rem;">
-                    <div id="historyList">
-                        <div style="text-align: center; padding: 2rem; color: #666;">
-                            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                            <p>Memuat riwayat...</p>
-                        </div>
+    <!-- History Section -->
+    <div id="historySection" class="content-section">
+        <div class="mobile-card">
+            <div class="mobile-card-header">
+                <i class="fas fa-history me-2"></i>Riwayat Distribusi
+            </div>
+            <div style="padding: 1rem;">
+                <div id="historyList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Memuat riwayat...</p>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Dashboard Section -->
-        <div id="dashboardSection" class="content-section">
-            <div class="mobile-card">
-                <div class="mobile-card-header">
-                    <i class="fas fa-chart-bar me-2"></i>Dashboard BBM
+    <!-- Dashboard Section -->
+    <div id="dashboardSection" class="content-section">
+        <div class="mobile-card">
+            <div class="mobile-card-header">
+                <i class="fas fa-chart-bar me-2"></i>Dashboard Overview
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalDistributions">0</div>
+                    <div class="stat-label">Total Distribusi</div>
                 </div>
-                
-                <!-- Connection Status -->
-                <div style="padding: 1rem; background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-                        <div>
-                            <strong>Status Koneksi:</strong> 
-                            <span id="connectionStatus" style="color: #666;">Mengecek...</span>
-                        </div>
-                        <div style="display: flex; gap: 0.5rem;">
-                            <button class="form-btn primary" onclick="testFirestoreConnection()" style="padding: 0.5rem 1rem; margin: 0;">
-                                <i class="fas fa-sync me-1"></i>Test Koneksi
-                            </button>
-                            <button class="form-btn secondary" onclick="forceReloadData()" style="padding: 0.5rem 1rem; margin: 0;">
-                                <i class="fas fa-refresh me-1"></i>Refresh Data
-                            </button>
-                        </div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="packingCount">0</div>
+                    <div class="stat-label">Packing</div>
                 </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalDistributions">0</div>
-                        <div class="stat-label">Total Data BBM</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="packingCount">0</div>
-                        <div class="stat-label">Packing</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="deliveryCount">0</div>
-                        <div class="stat-label">Delivery</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="arrivedCount">0</div>
-                        <div class="stat-label">Arrived</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="finishedCount">0</div>
-                        <div class="stat-label">Finished</div>
-                    </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="deliveryCount">0</div>
+                    <div class="stat-label">Delivery</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="arrivedCount">0</div>
+                    <div class="stat-label">Arrived</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="finishedCount">0</div>
+                    <div class="stat-label">Finished</div>
                 </div>
             </div>
         </div>
@@ -561,6 +503,7 @@
         </div>
     </div>
 
+    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
     
@@ -580,117 +523,112 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        console.log('🔥 Firebase initialized successfully');
-        console.log('📦 Project:', firebaseConfig.projectId);
+        console.log('🔥 Firebase initialized - Project:', firebaseConfig.projectId);
         
         // ========== GLOBAL VARIABLES ==========
         let distributionData = [];
-        let currentEditingPO = null;
-
-        // ========== NAVIGATION ==========
-        // ========== GLOBAL VARIABLES ==========
-        let distributionData = [];
-        let currentEditingPO = null;
+        let currentEditingId = null;
 
         // ========== NAVIGATION ==========
         async function showSection(section) {
-            console.log('📍 Navigating to:', section);
-            
-            // Hide all sections
             document.querySelectorAll('.content-section').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
             
-            // Show selected section
             document.getElementById(section + 'Section').classList.add('active');
             event.target.classList.add('active');
 
-            // Always reload data first
             await loadDistributionData();
 
-            // Load data for specific sections
             if (section === 'tracking') {
-                console.log('🔄 Loading tracking data...');
-                await loadTrackingData();
+                loadTrackingData();
             } else if (section === 'history') {
-                console.log('🔄 Loading history data...');
                 loadHistoryData();
             } else if (section === 'dashboard') {
-                console.log('🔄 Updating dashboard...');
                 updateDashboard();
             }
         }
 
         // ========== DISTRIBUTION FORM ==========
-        document.getElementById('distributionForm').addEventListener('submit', function(e) {
+        document.getElementById('distributionForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const formData = {
-                id: Date.now().toString(),
                 numberPO: document.getElementById('numberPO').value,
                 tanggalKirim: document.getElementById('tanggalKirim').value,
                 nomorPlat: document.getElementById('nomorPlat').value,
-                namaOperator: document.getElementById('namaOperator').value,
-                noTelpOperator: document.getElementById('noTelpOperator').value,
-                jumlahDistribusi: document.getElementById('jumlahDistribusi').value,
+                namaDriver: document.getElementById('namaDriver').value,
+                noTelpDriver: document.getElementById('noTelpDriver').value,
+                jumlahDistribusi: parseInt(document.getElementById('jumlahDistribusi').value),
                 tujuan: document.getElementById('tujuan').value,
                 picTujuan: document.getElementById('picTujuan').value,
                 currentStatus: document.getElementById('statusAwal').value,
                 statusHistory: [
                     {
                         status: document.getElementById('statusAwal').value,
-                        timestamp: new Date().toISOString()
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     }
                 ],
-                createdAt: new Date().toISOString()
-            };
-                statusHistory: [
-                    {
-                        status: document.getElementById('statusAwal').value,
-                        timestamp: new Date().toISOString(),
-                        user: currentUser.username
-                    }
-                ],
-                createdAt: new Date().toISOString(),
-                createdBy: currentUser.username
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
-            // TODO: Save to Firebase/Database
-            distributionData.push(formData);
-            saveToLocalStorage();
-
-            showAlert('Data BBM berhasil ditambahkan! PO: ' + formData.numberPO, 'success');
-            resetForm();
-            updateDashboard();
+            try {
+                await db.collection('bbm_distributions').add(formData);
+                showAlert('✅ Distribusi berhasil ditambahkan! PO: ' + formData.numberPO, 'success');
+                resetForm();
+                await loadDistributionData();
+                updateDashboard();
+            } catch (error) {
+                console.error('❌ Error saving:', error);
+                showAlert('❌ Gagal menyimpan: ' + error.message, 'danger');
+            }
         });
 
         function resetForm() {
             document.getElementById('distributionForm').reset();
         }
 
-        // ========== TRACKING FUNCTIONS ==========
-        async function loadTrackingData() {
+        // ========== LOAD DATA FROM FIRESTORE ==========
+        async function loadDistributionData() {
+            try {
+                const querySnapshot = await db.collection('bbm_distributions')
+                    .orderBy('createdAt', 'desc')
+                    .get();
+                
+                distributionData = [];
+                querySnapshot.forEach((doc) => {
+                    distributionData.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                console.log('✅ Loaded', distributionData.length, 'distributions');
+                updateDashboard();
+                
+            } catch (error) {
+                console.error('❌ Error loading data:', error);
+                if (error.code === 'failed-precondition') {
+                    // Fallback without orderBy
+                    const querySnapshot = await db.collection('bbm_distributions').get();
+                    distributionData = [];
+                    querySnapshot.forEach((doc) => {
+                        distributionData.push({ id: doc.id, ...doc.data() });
+                    });
+                }
+            }
+        }
+
+        // ========== TRACKING ==========
+        function loadTrackingData() {
             const trackingList = document.getElementById('trackingList');
-            
-            // Show loading
-            trackingList.innerHTML = `
-                <div style="text-align: center; padding: 2rem; color: #666;">
-                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-                    <p>Memuat data tracking...</p>
-                </div>
-            `;
-            
-            console.log('📊 Total data in memory:', distributionData.length);
-            
             const activeDistributions = distributionData.filter(d => d.currentStatus !== 'finished');
-            console.log('✅ Active BBM (not finished):', activeDistributions.length);
 
             if (activeDistributions.length === 0) {
                 trackingList.innerHTML = `
                     <div style="text-align: center; padding: 3rem; color: #666;">
                         <i class="fas fa-box-open" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <h5>Belum ada BBM aktif</h5>
-                        <p>Status "Finished" tidak ditampilkan di Tracking</p>
-                        <p style="margin-top: 1rem;">Total data BBM: ${distributionData.length}</p>
+                        <h5>Belum ada distribusi aktif</h5>
+                        <p>Data dengan status "Finished" ada di menu Riwayat</p>
                     </div>
                 `;
                 return;
@@ -698,29 +636,23 @@
 
             let html = '';
             activeDistributions.forEach(dist => {
-                const statusClass = 'status-' + dist.currentStatus;
-                const statusText = getStatusText(dist.currentStatus);
-
                 html += `
                     <div class="distribution-item">
                         <div class="distribution-header">
                             <div class="po-number">${dist.numberPO}</div>
-                            <div class="status-badge ${statusClass}">${statusText}</div>
+                            <div class="status-badge status-${dist.currentStatus}">${getStatusText(dist.currentStatus)}</div>
                         </div>
                         <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                            <div><strong>Operator:</strong> ${dist.namaOperator} (${dist.noTelpOperator})</div>
+                            <div><strong>Driver:</strong> ${dist.namaDriver} (${dist.noTelpDriver})</div>
                             <div><strong>Kendaraan:</strong> ${dist.nomorPlat}</div>
                             <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
-                            <div><strong>Jumlah:</strong> ${dist.jumlahDistribusi} Liter</div>
-                            <div><strong>PIC:</strong> ${dist.picTujuan}</div>
+                            <div><strong>Jumlah:</strong> ${dist.jumlahDistribusi} unit</div>
                         </div>
-                        
                         <div style="margin-top: 1rem;">
-                            <button class="form-btn primary" onclick="openStatusModal('${dist.id}')">
+                            <button class="form-btn primary" onclick="openStatusModal('${dist.id}', '${dist.numberPO}')">
                                 <i class="fas fa-edit me-1"></i>Update Status
                             </button>
                         </div>
-
                         <div class="status-history">
                             <div class="status-history-title">
                                 <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
@@ -734,22 +666,124 @@
             });
 
             trackingList.innerHTML = html;
-            console.log('✅ Tracking data rendered successfully');
         }
 
+        // ========== HISTORY ==========
+        function loadHistoryData() {
+            const historyList = document.getElementById('historyList');
+
+            if (distributionData.length === 0) {
+                historyList.innerHTML = `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h5>Belum ada riwayat distribusi</h5>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            distributionData.forEach(dist => {
+                let createdDate = 'N/A';
+                if (dist.createdAt && dist.createdAt.toDate) {
+                    createdDate = dist.createdAt.toDate().toLocaleDateString('id-ID');
+                }
+
+                html += `
+                    <div class="distribution-item">
+                        <div class="distribution-header">
+                            <div class="po-number">${dist.numberPO}</div>
+                            <div class="status-badge status-${dist.currentStatus}">${getStatusText(dist.currentStatus)}</div>
+                        </div>
+                        <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
+                            <div><strong>Tanggal Kirim:</strong> ${dist.tanggalKirim}</div>
+                            <div><strong>Driver:</strong> ${dist.namaDriver}</div>
+                            <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
+                            <div><strong>Dibuat:</strong> ${createdDate}</div>
+                        </div>
+                        <div class="status-history">
+                            <div class="status-history-title">
+                                <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
+                            </div>
+                            <div class="timeline">
+                                ${generateTimelineHTML(dist.statusHistory)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            historyList.innerHTML = html;
+        }
+
+        // ========== DASHBOARD ==========
+        function updateDashboard() {
+            const statusCount = { packing: 0, delivery: 0, arrived: 0, finished: 0 };
+
+            distributionData.forEach(dist => {
+                if (statusCount[dist.currentStatus] !== undefined) {
+                    statusCount[dist.currentStatus]++;
+                }
+            });
+
+            document.getElementById('totalDistributions').textContent = distributionData.length;
+            document.getElementById('packingCount').textContent = statusCount.packing;
+            document.getElementById('deliveryCount').textContent = statusCount.delivery;
+            document.getElementById('arrivedCount').textContent = statusCount.arrived;
+            document.getElementById('finishedCount').textContent = statusCount.finished;
+        }
+
+        // ========== STATUS MODAL ==========
+        function openStatusModal(docId, poNumber) {
+            currentEditingId = docId;
+            document.getElementById('modalPONumber').textContent = poNumber;
+            document.getElementById('newStatus').value = '';
+            document.getElementById('statusModal').style.display = 'flex';
+        }
+
+        function closeStatusModal() {
+            currentEditingId = null;
+            document.getElementById('statusModal').style.display = 'none';
+        }
+
+        async function updateStatus() {
+            const newStatus = document.getElementById('newStatus').value;
+            
+            if (!newStatus) {
+                showAlert('⚠️ Pilih status terlebih dahulu!', 'warning');
+                return;
+            }
+
+            try {
+                const docRef = db.collection('bbm_distributions').doc(currentEditingId);
+                await docRef.update({
+                    currentStatus: newStatus,
+                    statusHistory: firebase.firestore.FieldValue.arrayUnion({
+                        status: newStatus,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    })
+                });
+
+                showAlert('✅ Status berhasil diupdate!', 'success');
+                closeStatusModal();
+                await loadDistributionData();
+                loadTrackingData();
+                
+            } catch (error) {
+                console.error('❌ Error updating:', error);
+                showAlert('❌ Gagal update: ' + error.message, 'danger');
+            }
+        }
+
+        // ========== UTILITIES ==========
         function generateTimelineHTML(history) {
             if (!history || history.length === 0) return '<p style="color: #666;">Belum ada riwayat</p>';
 
             let html = '';
-            // Reverse to show newest first
             [...history].reverse().forEach(item => {
                 let date;
                 if (item.timestamp && item.timestamp.toDate) {
-                    // Firestore Timestamp
                     date = item.timestamp.toDate();
-                } else if (item.timestamp) {
-                    // Regular Date or ISO string
-                    date = new Date(item.timestamp);
                 } else {
                     date = new Date();
                 }
@@ -783,265 +817,6 @@
             return statusMap[status] || status;
         }
 
-        // ========== STATUS UPDATE MODAL ==========
-        function openStatusModal(docId) {
-            currentEditingPO = docId;
-            const dist = distributionData.find(d => d.id === docId);
-            if (dist) {
-                document.getElementById('modalPONumber').textContent = dist.numberPO;
-            }
-            document.getElementById('newStatus').value = '';
-            document.getElementById('statusModal').style.display = 'flex';
-        }
-
-        function closeStatusModal() {
-            currentEditingPO = null;
-            document.getElementById('statusModal').style.display = 'none';
-        }
-
-        async function updateStatus() {
-            const newStatus = document.getElementById('newStatus').value;
-            
-            if (!newStatus) {
-                showAlert('Pilih status terlebih dahulu!', 'warning');
-                return;
-            }
-
-            // Find distribution
-            const dist = distributionData.find(d => d.id === currentEditingPO);
-            if (!dist) {
-                showAlert('Data BBM tidak ditemukan!', 'danger');
-                return;
-            }
-
-            try {
-                // Update in Firestore
-                const docRef = db.collection('bbm_management').doc(currentEditingPO);
-                
-                // Add new status to history
-                const newHistoryItem = {
-                    status: newStatus,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                };
-                
-                await docRef.update({
-                    currentStatus: newStatus,
-                    statusHistory: firebase.firestore.FieldValue.arrayUnion(newHistoryItem)
-                });
-
-                showAlert('Status berhasil diupdate!', 'success');
-                closeStatusModal();
-                
-                // Reload data
-                await loadDistributionData();
-                loadTrackingData();
-                updateDashboard();
-                
-            } catch (error) {
-                console.error('Error updating status:', error);
-                showAlert('Gagal update status: ' + error.message, 'danger');
-            }
-        }
-
-        // ========== HISTORY FUNCTIONS ==========
-        function loadHistoryData() {
-            const historyList = document.getElementById('historyList');
-
-            if (distributionData.length === 0) {
-                historyList.innerHTML = `
-                    <div style="text-align: center; padding: 3rem; color: #666;">
-                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                        <h5>Belum ada riwayat BBM</h5>
-                    </div>
-                `;
-                return;
-            }
-
-            let html = '';
-            // Sort by created date, newest first - already sorted from Firestore query
-            distributionData.forEach(dist => {
-                const statusClass = 'status-' + dist.currentStatus;
-                const statusText = getStatusText(dist.currentStatus);
-                
-                let createdDate = 'N/A';
-                if (dist.createdAt && dist.createdAt.toDate) {
-                    createdDate = dist.createdAt.toDate().toLocaleDateString('id-ID');
-                } else if (dist.createdAt) {
-                    createdDate = new Date(dist.createdAt).toLocaleDateString('id-ID');
-                }
-
-                html += `
-                    <div class="distribution-item">
-                        <div class="distribution-header">
-                            <div class="po-number">${dist.numberPO}</div>
-                            <div class="status-badge ${statusClass}">${statusText}</div>
-                        </div>
-                        <div style="font-size: 0.9rem; color: #666; margin-top: 0.5rem;">
-                            <div><strong>Tanggal Kirim:</strong> ${dist.tanggalKirim}</div>
-                            <div><strong>Operator:</strong> ${dist.namaOperator}</div>
-                            <div><strong>Tujuan:</strong> ${dist.tujuan}</div>
-                            <div><strong>Dibuat:</strong> ${createdDate}</div>
-                        </div>
-                        
-                        <div class="status-history">
-                            <div class="status-history-title">
-                                <i class="fas fa-clock-rotate-left me-1"></i>Riwayat Status
-                            </div>
-                            <div class="timeline">
-                                ${generateTimelineHTML(dist.statusHistory)}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            historyList.innerHTML = html;
-        }
-
-        // ========== DASHBOARD FUNCTIONS ==========
-        function updateDashboard() {
-            console.log('📊 Updating dashboard with', distributionData.length, 'records');
-            
-            const statusCount = {
-                packing: 0,
-                delivery: 0,
-                arrived: 0,
-                finished: 0
-            };
-
-            distributionData.forEach(dist => {
-                if (statusCount[dist.currentStatus] !== undefined) {
-                    statusCount[dist.currentStatus]++;
-                }
-            });
-
-            console.log('📈 Status breakdown:', statusCount);
-
-            document.getElementById('totalDistributions').textContent = distributionData.length;
-            document.getElementById('packingCount').textContent = statusCount.packing;
-            document.getElementById('deliveryCount').textContent = statusCount.delivery;
-            document.getElementById('arrivedCount').textContent = statusCount.arrived;
-            document.getElementById('finishedCount').textContent = statusCount.finished;
-            
-            console.log('✅ Dashboard updated successfully');
-        }
-
-        // ========== DATA PERSISTENCE ==========
-        async function loadDistributionData() {
-            try {
-                console.log('Loading data from Firestore...');
-                
-                let querySnapshot;
-                try {
-                    // Try with orderBy first
-                    querySnapshot = await db.collection('bbm_management')
-                        .orderBy('createdAt', 'desc')
-                        .get();
-                } catch (indexError) {
-                    if (indexError.code === 'failed-precondition') {
-                        console.warn('⚠️ Index not found, loading without orderBy...');
-                        // Fallback: load without orderBy
-                        querySnapshot = await db.collection('bbm_management').get();
-                    } else {
-                        throw indexError;
-                    }
-                }
-                
-                distributionData = [];
-                querySnapshot.forEach((doc) => {
-                    distributionData.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                
-                // Sort in memory if no orderBy was used
-                distributionData.sort((a, b) => {
-                    const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
-                    const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
-                    return dateB - dateA;
-                });
-                
-                console.log('✅ Loaded', distributionData.length, 'BBM records from Firestore');
-                console.log('Data:', distributionData);
-                
-                // Update connection status if element exists
-                const statusEl = document.getElementById('connectionStatus');
-                if (statusEl) {
-                    statusEl.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle me-1"></i>Terhubung</span>';
-                }
-                
-                updateDashboard();
-                
-            } catch (error) {
-                console.error('❌ Error loading from Firestore:', error);
-                console.error('Error code:', error.code);
-                console.error('Error message:', error.message);
-                
-                // Update connection status if element exists
-                const statusEl = document.getElementById('connectionStatus');
-                if (statusEl) {
-                    statusEl.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-times-circle me-1"></i>Error</span>';
-                }
-                
-                // Show specific error message
-                if (error.code === 'permission-denied') {
-                    showAlert('⚠️ Firestore Rules Error: Akses ditolak. Pastikan Firestore Rules sudah diatur dengan benar!', 'danger');
-                } else if (error.code === 'failed-precondition') {
-                    showAlert('⚠️ Index Error: Klik link di Console untuk membuat index.', 'warning');
-                } else {
-                    showAlert('Gagal memuat data: ' + error.message, 'warning');
-                }
-            }
-        }
-
-        // Test Firestore Connection
-        async function testFirestoreConnection() {
-            try {
-                showAlert('Testing koneksi ke Firestore...', 'info');
-                
-                // Try to read from collection
-                const snapshot = await db.collection('bbm_management').limit(1).get();
-                
-                showAlert('✅ Koneksi berhasil! Firestore bisa diakses.', 'success');
-                console.log('✅ Firestore connection test successful');
-                
-                // Reload data
-                await loadDistributionData();
-                
-            } catch (error) {
-                console.error('❌ Firestore connection test failed:', error);
-                
-                if (error.code === 'permission-denied') {
-                    showAlert('❌ Firestore Rules Error! Ubah rules menjadi: allow read, write: if true;', 'danger');
-                } else {
-                    showAlert('❌ Koneksi gagal: ' + error.message, 'danger');
-                }
-            }
-        }
-
-        // Force Reload Data
-        async function forceReloadData() {
-            try {
-                showAlert('🔄 Memuat ulang data dari Firestore...', 'info');
-                console.log('🔄 Force reloading data...');
-                
-                await loadDistributionData();
-                
-                // Update all sections
-                updateDashboard();
-                await loadTrackingData();
-                loadHistoryData();
-                
-                showAlert('✅ Data berhasil dimuat ulang! Total: ' + distributionData.length, 'success');
-                
-            } catch (error) {
-                console.error('❌ Error reloading data:', error);
-                showAlert('❌ Gagal memuat ulang data: ' + error.message, 'danger');
-            }
-        }
-
-        // ========== UTILITIES ==========
         function showAlert(message, type = 'success') {
             const alertDiv = document.createElement('div');
             alertDiv.className = `alert alert-${type}`;
@@ -1059,19 +834,16 @@
             `;
             
             const colors = {
-                success: { bg: '#d4edda', text: '#155724', icon: 'check-circle' },
-                danger: { bg: '#f8d7da', text: '#721c24', icon: 'exclamation-triangle' },
-                warning: { bg: '#fff3cd', text: '#856404', icon: 'exclamation-circle' },
-                info: { bg: '#d1ecf1', text: '#0c5460', icon: 'info-circle' }
+                success: { bg: '#d4edda', text: '#155724' },
+                danger: { bg: '#f8d7da', text: '#721c24' },
+                warning: { bg: '#fff3cd', text: '#856404' },
+                info: { bg: '#d1ecf1', text: '#0c5460' }
             };
             
             const color = colors[type] || colors.info;
             alertDiv.style.backgroundColor = color.bg;
             alertDiv.style.color = color.text;
-            
-            alertDiv.innerHTML = `
-                <i class="fas fa-${color.icon} me-2"></i>${message}
-            `;
+            alertDiv.textContent = message;
             
             document.body.appendChild(alertDiv);
             setTimeout(() => alertDiv.remove(), 4000);
@@ -1079,27 +851,10 @@
 
         // ========== INITIALIZATION ==========
         window.addEventListener('load', async function() {
-            console.log('🚀 Pine BBM - BBM Management System Loading...');
-            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            console.log('📦 Project:', firebaseConfig.projectId);
-            console.log('🔥 Firebase Status: Initialized');
-            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-            
-            // Set today's date as default
+            console.log('🚀 Pine BBM Loading...');
             document.getElementById('tanggalKirim').valueAsDate = new Date();
-            console.log('✅ Form initialized');
-            
-            // Load existing data from Firestore
-            console.log('📡 Connecting to Firestore...');
             await loadDistributionData();
-            
-            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
             console.log('✅ Application Ready!');
-            console.log('💡 Tips:');
-            console.log('   - Buka tab Dashboard untuk test koneksi');
-            console.log('   - Tambah data di menu "BBM Baru"');
-            console.log('   - Lihat Console (F12) untuk debugging');
-            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
         });
     </script>
 </body>
