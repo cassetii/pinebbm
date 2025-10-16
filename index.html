@@ -483,6 +483,20 @@
                 <div class="mobile-card-header">
                     <i class="fas fa-chart-bar me-2"></i>Dashboard BBM
                 </div>
+                
+                <!-- Connection Status -->
+                <div style="padding: 1rem; background: #f8f9fa; border-bottom: 1px solid #e9ecef;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Status Koneksi:</strong> 
+                            <span id="connectionStatus" style="color: #666;">Mengecek...</span>
+                        </div>
+                        <button class="form-btn primary" onclick="testFirestoreConnection()" style="padding: 0.5rem 1rem; margin: 0;">
+                            <i class="fas fa-sync me-1"></i>Test Koneksi
+                        </button>
+                    </div>
+                </div>
+                
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-number" id="totalDistributions">0</div>
@@ -548,20 +562,21 @@
     <script>
         // ========== FIREBASE CONFIGURATION ==========
         const firebaseConfig = {
-            apiKey: "AIzaSyCHWtgTxTkCt983RqcL1_PJ3xrXATKLVCQ",
-            authDomain: "pinus-ekosistem.firebaseapp.com",
-            projectId: "pinus-ekosistem",
-            storageBucket: "pinus-ekosistem.firebasestorage.app",
-            messagingSenderId: "976149399827",
-            appId: "1:976149399827:web:158898de3881b764aaf2e6",
-            measurementId: "G-V5VLDY3D2H"
+            apiKey: "AIzaSyDxr5BW6TKOn7SMHbXzvY92UZ5kLXDY3YA",
+            authDomain: "pinusapps.firebaseapp.com",
+            projectId: "pinusapps",
+            storageBucket: "pinusapps.firebasestorage.app",
+            messagingSenderId: "1092012262303",
+            appId: "1:1092012262303:web:9d505ed9418dd25278b3aa",
+            measurementId: "G-7W6S19BE29"
         };
 
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
         
-        console.log('Firebase initialized successfully');
+        console.log('🔥 Firebase initialized successfully');
+        console.log('📦 Project:', firebaseConfig.projectId);
         
         // ========== GLOBAL VARIABLES ==========
         let distributionData = [];
@@ -881,9 +896,23 @@
         // ========== DATA PERSISTENCE ==========
         async function loadDistributionData() {
             try {
-                const querySnapshot = await db.collection('bbm_management')
-                    .orderBy('createdAt', 'desc')
-                    .get();
+                console.log('Loading data from Firestore...');
+                
+                let querySnapshot;
+                try {
+                    // Try with orderBy first
+                    querySnapshot = await db.collection('bbm_management')
+                        .orderBy('createdAt', 'desc')
+                        .get();
+                } catch (indexError) {
+                    if (indexError.code === 'failed-precondition') {
+                        console.warn('⚠️ Index not found, loading without orderBy...');
+                        // Fallback: load without orderBy
+                        querySnapshot = await db.collection('bbm_management').get();
+                    } else {
+                        throw indexError;
+                    }
+                }
                 
                 distributionData = [];
                 querySnapshot.forEach((doc) => {
@@ -893,12 +922,68 @@
                     });
                 });
                 
-                console.log('Loaded', distributionData.length, 'BBM records from Firestore');
+                // Sort in memory if no orderBy was used
+                distributionData.sort((a, b) => {
+                    const dateA = a.createdAt?.toDate ? a.createdAt.toDate() : new Date(0);
+                    const dateB = b.createdAt?.toDate ? b.createdAt.toDate() : new Date(0);
+                    return dateB - dateA;
+                });
+                
+                console.log('✅ Loaded', distributionData.length, 'BBM records from Firestore');
+                console.log('Data:', distributionData);
+                
+                // Update connection status if element exists
+                const statusEl = document.getElementById('connectionStatus');
+                if (statusEl) {
+                    statusEl.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle me-1"></i>Terhubung</span>';
+                }
+                
                 updateDashboard();
                 
             } catch (error) {
-                console.error('Error loading from Firestore:', error);
-                showAlert('Gagal memuat data: ' + error.message, 'warning');
+                console.error('❌ Error loading from Firestore:', error);
+                console.error('Error code:', error.code);
+                console.error('Error message:', error.message);
+                
+                // Update connection status if element exists
+                const statusEl = document.getElementById('connectionStatus');
+                if (statusEl) {
+                    statusEl.innerHTML = '<span style="color: #dc3545;"><i class="fas fa-times-circle me-1"></i>Error</span>';
+                }
+                
+                // Show specific error message
+                if (error.code === 'permission-denied') {
+                    showAlert('⚠️ Firestore Rules Error: Akses ditolak. Pastikan Firestore Rules sudah diatur dengan benar!', 'danger');
+                } else if (error.code === 'failed-precondition') {
+                    showAlert('⚠️ Index Error: Klik link di Console untuk membuat index.', 'warning');
+                } else {
+                    showAlert('Gagal memuat data: ' + error.message, 'warning');
+                }
+            }
+        }
+
+        // Test Firestore Connection
+        async function testFirestoreConnection() {
+            try {
+                showAlert('Testing koneksi ke Firestore...', 'info');
+                
+                // Try to read from collection
+                const snapshot = await db.collection('bbm_management').limit(1).get();
+                
+                showAlert('✅ Koneksi berhasil! Firestore bisa diakses.', 'success');
+                console.log('✅ Firestore connection test successful');
+                
+                // Reload data
+                await loadDistributionData();
+                
+            } catch (error) {
+                console.error('❌ Firestore connection test failed:', error);
+                
+                if (error.code === 'permission-denied') {
+                    showAlert('❌ Firestore Rules Error! Ubah rules menjadi: allow read, write: if true;', 'danger');
+                } else {
+                    showAlert('❌ Koneksi gagal: ' + error.message, 'danger');
+                }
             }
         }
 
