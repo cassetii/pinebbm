@@ -565,7 +565,7 @@
                 statusHistory: [
                     {
                         status: document.getElementById('statusAwal').value,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        timestamp: new Date()
                     }
                 ],
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -760,7 +760,7 @@
                     currentStatus: newStatus,
                     statusHistory: firebase.firestore.FieldValue.arrayUnion({
                         status: newStatus,
-                        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                        timestamp: new Date()
                     })
                 });
 
@@ -783,7 +783,14 @@
             [...history].reverse().forEach(item => {
                 let date;
                 if (item.timestamp && item.timestamp.toDate) {
+                    // Firestore Timestamp
                     date = item.timestamp.toDate();
+                } else if (item.timestamp && item.timestamp.seconds) {
+                    // Firestore Timestamp (alternative format)
+                    date = new Date(item.timestamp.seconds * 1000);
+                } else if (item.timestamp) {
+                    // Regular Date or ISO string
+                    date = new Date(item.timestamp);
                 } else {
                     date = new Date();
                 }
